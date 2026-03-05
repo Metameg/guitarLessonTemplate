@@ -32,7 +32,9 @@ const GuitarAudio = (() => {
   let active      = false;
 
   // Standard tuning: index 0 = high e (str-1) → index 5 = low E (str-6)
-  const FREQS  = [329.63, 246.94, 196.00, 146.83, 110.00, 82.41];
+  // G major chord voicing (str-1 high e → str-6 low E)
+  // G4, B3, G3, D3, B2, G2
+  const FREQS  = [392.00, 246.94, 196.00, 146.83, 123.47, 98.00];
   // Lower strings sustain longer (higher damping factor)
   const DAMP   = [0.9930, 0.9943, 0.9955, 0.9963, 0.9971, 0.9978];
   // Duration in seconds per string (low strings ring longer)
@@ -372,13 +374,6 @@ const GuitarAudio = (() => {
     }
   });
 
-  // ── Ambient background plucks ─────────────────────────────
-  function ambientPluck() {
-    const idx = randInt(0, 5);
-    pluckString(idx, rand(4, 9), 600);
-    GuitarAudio.pluck(idx, rand(0.1, 0.25));
-    setTimeout(ambientPluck, rand(2800, 6500));
-  }
 
   // ── Guitar draw-in on load ────────────────────────────────
   function drawOutline() {
@@ -463,8 +458,6 @@ const GuitarAudio = (() => {
     setTimeout(() => animateCounters('.stat-number'), 500);
     // Silent visual strum on load (no audio — no user gesture yet)
     setTimeout(() => strum(false), 700);
-    // Start ambient plucks after a delay
-    setTimeout(ambientPluck, 4500);
   }
 
   intro();
