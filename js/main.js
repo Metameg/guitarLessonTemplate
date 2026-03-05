@@ -327,10 +327,13 @@ const GuitarAudio = (() => {
   strings.forEach((str, idx) => {
     str.style.cursor = 'pointer';
 
-    // Hover: light pluck (no audio unless already unlocked)
+    // Hover: attempt unlock + light pluck
+    // unlock() succeeds immediately in Firefox; in Chrome it activates
+    // the context the moment any qualifying gesture has occurred.
     str.addEventListener('mouseenter', () => {
+      GuitarAudio.unlock();
       pluckString(idx, 9, 500);
-      GuitarAudio.pluck(idx, 0.32); // only plays if ctx is running
+      GuitarAudio.pluck(idx, 0.32);
     });
 
     // Click/tap: strong pluck + audio unlock + note
@@ -440,6 +443,16 @@ const GuitarAudio = (() => {
   }
 
   // ── Intro sequence ─────────────────────────────────────────
+  // Unlock AudioContext on the earliest possible gesture.
+  // pointermove counts in Firefox and Chrome with prior site engagement;
+  // touchstart covers mobile. After this fires once, hover plays audio.
+  const earlyUnlock = () => GuitarAudio.unlock();
+  document.addEventListener('pointermove',  earlyUnlock, { once: true, passive: true });
+  document.addEventListener('touchstart',   earlyUnlock, { once: true, passive: true });
+  document.addEventListener('keydown',      earlyUnlock, { once: true, passive: true });
+  // Also unlock the moment the cursor enters the guitar area specifically
+  svg.addEventListener('pointerenter', earlyUnlock, { once: true, passive: true });
+
   async function intro() {
     await new Promise(r => setTimeout(r, 350));
     await drawOutline();
