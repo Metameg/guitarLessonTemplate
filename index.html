@@ -2,12 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gary Coleman — Master Guitar Instructor offering personalized guitar lessons for all skill levels. Book your session today.">
-  <title>Gary Coleman | Master Guitar Instructor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Gary Coleman is a master guitar instructor in Houston, TX offering personalized one-on-one guitar lessons for all levels — beginner through advanced, classical, theory, and songwriting. Book your session today.">
+  <meta name="keywords" content="guitar lessons Houston, guitar instructor Houston TX, guitar teacher, beginner guitar lessons, advanced guitar lessons, music theory, classical guitar, songwriting lessons, one-on-one guitar lessons">
+  <meta name="author" content="Gary Coleman">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://garycolemanguitar.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://garycolemanguitar.com/">
+  <meta property="og:title" content="Gary Coleman | Master Guitar Instructor — Houston, TX">
+  <meta property="og:description" content="Personalized one-on-one guitar lessons for all skill levels. Beginner through advanced, classical, music theory, and songwriting. Book your session today.">
+  <meta property="og:image" content="https://garycolemanguitar.com/images/about.jpg">
+  <meta property="og:image:width" content="700">
+  <meta property="og:image:height" content="840">
+  <meta property="og:image:alt" content="Musician playing acoustic guitar in a studio setting">
+  <meta property="og:site_name" content="Gary Coleman Guitar">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://garycolemanguitar.com/">
+  <meta name="twitter:title" content="Gary Coleman | Master Guitar Instructor — Houston, TX">
+  <meta name="twitter:description" content="Personalized one-on-one guitar lessons for all skill levels. Book your session today.">
+  <meta name="twitter:image" content="https://garycolemanguitar.com/images/about.jpg">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://garycolemanguitar.com/#business",
+    "name": "Gary Coleman Guitar",
+    "description": "Master guitar instructor offering personalized one-on-one lessons for all skill levels in Houston, TX.",
+    "url": "https://garycolemanguitar.com",
+    "telephone": "+17132222999",
+    "email": "gary@garycolemanguitar.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Houston",
+      "addressRegion": "TX",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "29.7604",
+      "longitude": "-95.3698"
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Gary Coleman",
+      "jobTitle": "Master Guitar Instructor",
+      "alumniOf": "Berklee College of Music"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Guitar Lesson Programs",
+      "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Beginner Guitar Lessons"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Advanced Guitar Lessons"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Music Theory Lessons"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Classical Guitar Lessons"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Songwriting Lessons"}}
+      ]
+    },
+    "priceRange": "$45–$80 per lesson",
+    "openingHours": "Mo,Tu,We,Th,Fr,Sa 09:00-19:00",
+    "image": "https://garycolemanguitar.com/images/about.jpg"
+  }
+  </script>
+
+  <title>Gary Coleman | Master Guitar Instructor — Houston, TX</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
+  <meta name="theme-color" content="#080808">
+  <meta name="msapplication-TileColor" content="#c9a84c">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -35,7 +113,6 @@
   <section id="hero" aria-label="Hero">
     <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
-    <!-- Background ambient staff lines -->
     <div class="staff-lines" aria-hidden="true">
       <div class="staff-line"></div>
       <div class="staff-line"></div>
@@ -45,7 +122,6 @@
     </div>
 
     <div class="hero-layout">
-      <!-- Left: Text -->
       <div class="hero-text" id="hero-text">
         <p class="hero-eyebrow">Master Guitar Instructor</p>
         <h1 class="hero-title">
@@ -75,60 +151,59 @@
         </div>
       </div>
 
-      <!-- Right: Guitar SVG -->
+      <!-- Guitar SVG -->
       <div class="hero-guitar" id="hero-guitar" aria-hidden="true">
         <div class="guitar-glow-ring ring-1"></div>
         <div class="guitar-glow-ring ring-2"></div>
         <div class="guitar-glow-ring ring-3"></div>
 
-        <svg class="guitar-svg" id="guitar-svg" viewBox="0 0 300 700" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Audio hint — shown after first click -->
+        <div class="guitar-hint" id="guitar-hint" aria-hidden="true">
+          <span>Click or hover strings to play</span>
+        </div>
+
+        <svg class="guitar-svg" id="guitar-svg" viewBox="0 0 300 700" fill="none"
+             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive guitar illustration">
           <defs>
-            <!-- Body glow -->
             <filter id="glow-gold" x="-30%" y="-30%" width="160%" height="160%">
               <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
               <feFlood flood-color="#c9a84c" flood-opacity="0.5" result="color"/>
               <feComposite in="color" in2="blur" operator="in" result="shadow"/>
               <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
-            <!-- String glow -->
             <filter id="string-glow" x="-50%" y="-10%" width="200%" height="120%">
               <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
               <feFlood flood-color="#e8c97a" flood-opacity="0.8" result="color"/>
               <feComposite in="color" in2="blur" operator="in" result="glow"/>
               <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
-            <!-- Sound hole glow -->
             <filter id="hole-glow" x="-30%" y="-30%" width="160%" height="160%">
               <feGaussianBlur stdDeviation="4" result="blur"/>
               <feFlood flood-color="#c9a84c" flood-opacity="0.4" result="color"/>
               <feComposite in="color" in2="blur" operator="in" result="glow"/>
               <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
-            <!-- Wood gradient -->
             <linearGradient id="wood-grad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#1e0e04"/>
               <stop offset="40%" stop-color="#160b03"/>
               <stop offset="100%" stop-color="#0d0602"/>
             </linearGradient>
-            <!-- Neck gradient -->
             <linearGradient id="neck-grad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#150900"/>
               <stop offset="50%" stop-color="#2a1405"/>
               <stop offset="100%" stop-color="#150900"/>
             </linearGradient>
-            <!-- Headstock gradient -->
             <linearGradient id="head-grad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#1e0e04"/>
               <stop offset="100%" stop-color="#120804"/>
             </linearGradient>
-            <!-- Radial glow for sound hole -->
             <radialGradient id="hole-light" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.1"/>
               <stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/>
             </radialGradient>
           </defs>
 
-          <!-- ── Guitar Body ── -->
+          <!-- Guitar Body -->
           <path class="guitar-body" id="guitar-body"
             d="M 150,295
                C 220,295 225,340 220,355
@@ -141,12 +216,8 @@
                C 40,490 92,455 95,440
                C 90,425 75,395 80,355
                C 75,340 80,295 150,295 Z"
-            fill="url(#wood-grad)"
-            stroke="#c9a84c"
-            stroke-width="2"
-            filter="url(#glow-gold)"/>
+            fill="url(#wood-grad)" stroke="#c9a84c" stroke-width="2" filter="url(#glow-gold)"/>
 
-          <!-- Body binding (decorative inner line) -->
           <path class="guitar-binding"
             d="M 150,302
                C 214,302 219,344 214,358
@@ -159,34 +230,23 @@
                C 46,487 97,452 100,437
                C 95,422 81,395 86,358
                C 81,344 86,302 150,302 Z"
-            fill="none"
-            stroke="#c9a84c"
-            stroke-width="0.7"
-            stroke-opacity="0.3"/>
+            fill="none" stroke="#c9a84c" stroke-width="0.7" stroke-opacity="0.3"/>
 
-          <!-- ── Neck ── -->
+          <!-- Neck -->
           <path class="guitar-neck"
             d="M 125,93 L 175,93 L 180,295 L 120,295 Z"
-            fill="url(#neck-grad)"
-            stroke="#c9a84c"
-            stroke-width="1.5"/>
-
-          <!-- Neck side highlight -->
+            fill="url(#neck-grad)" stroke="#c9a84c" stroke-width="1.5"/>
           <line x1="125.5" y1="93" x2="120.5" y2="295" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
           <line x1="174.5" y1="93" x2="179.5" y2="295" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
 
-          <!-- ── Headstock ── -->
+          <!-- Headstock -->
           <path class="guitar-headstock"
             d="M 112,15 Q 150,5 188,15 L 182,93 L 118,93 Z"
-            fill="url(#head-grad)"
-            stroke="#c9a84c"
-            stroke-width="1.5"/>
+            fill="url(#head-grad)" stroke="#c9a84c" stroke-width="1.5"/>
+          <text x="150" y="58" text-anchor="middle" font-family="Playfair Display, serif"
+                font-size="11" fill="#c9a84c" fill-opacity="0.6" letter-spacing="2">GC</text>
 
-          <!-- Headstock inlay -->
-          <text x="150" y="58" text-anchor="middle" font-family="Playfair Display, serif" font-size="11" fill="#c9a84c" fill-opacity="0.6" letter-spacing="2">GC</text>
-
-          <!-- ── Tuning Machines ── -->
-          <!-- Left side (3 pegs) -->
+          <!-- Tuning Machines -->
           <g class="tuning-peg" transform="translate(108, 22)">
             <circle r="7" fill="#1a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
             <circle r="3" fill="#c9a84c"/>
@@ -202,7 +262,6 @@
             <circle r="3" fill="#c9a84c"/>
             <line x1="7" y1="0" x2="17" y2="0" stroke="#c9a84c" stroke-width="1.5"/>
           </g>
-          <!-- Right side (3 pegs) -->
           <g class="tuning-peg" transform="translate(192, 22)">
             <circle r="7" fill="#1a1a1a" stroke="#c9a84c" stroke-width="1.5"/>
             <circle r="3" fill="#c9a84c"/>
@@ -219,10 +278,10 @@
             <line x1="-7" y1="0" x2="-17" y2="0" stroke="#c9a84c" stroke-width="1.5"/>
           </g>
 
-          <!-- ── Nut ── -->
+          <!-- Nut -->
           <rect x="122" y="88" width="56" height="5" rx="1" fill="#c9a84c"/>
 
-          <!-- ── Frets ── -->
+          <!-- Frets -->
           <line class="fret" x1="125" y1="105" x2="175" y2="105" stroke="#c9a84c" stroke-width="1.8" stroke-opacity="0.7"/>
           <line class="fret" x1="124" y1="117" x2="176" y2="117" stroke="#c9a84c" stroke-width="1.5" stroke-opacity="0.6"/>
           <line class="fret" x1="124" y1="129" x2="176" y2="129" stroke="#c9a84c" stroke-width="1.5" stroke-opacity="0.6"/>
@@ -236,30 +295,24 @@
           <line class="fret" x1="120" y1="258" x2="180" y2="258" stroke="#c9a84c" stroke-width="1.5" stroke-opacity="0.6"/>
           <line class="fret" x1="120" y1="277" x2="180" y2="277" stroke="#c9a84c" stroke-width="1.5" stroke-opacity="0.6"/>
 
-          <!-- Fret Position Markers -->
+          <!-- Fret dots -->
           <circle cx="150" cy="136" r="4" fill="#c9a84c" fill-opacity="0.5"/>
           <circle cx="150" cy="168" r="4" fill="#c9a84c" fill-opacity="0.5"/>
           <circle cx="150" cy="196" r="4" fill="#c9a84c" fill-opacity="0.5"/>
-          <!-- Double dots at 12th fret -->
           <circle cx="143" cy="230" r="4" fill="#c9a84c" fill-opacity="0.5"/>
           <circle cx="157" cy="230" r="4" fill="#c9a84c" fill-opacity="0.5"/>
 
-          <!-- ── Sound Hole ── -->
+          <!-- Sound Hole -->
           <circle cx="150" cy="492" r="48" fill="#060303"/>
           <circle cx="150" cy="492" r="48" fill="url(#hole-light)"/>
           <circle cx="150" cy="492" r="48" fill="none" stroke="#c9a84c" stroke-width="2.5" filter="url(#hole-glow)"/>
           <circle cx="150" cy="492" r="42" fill="none" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
           <circle cx="150" cy="492" r="36" fill="none" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.25"/>
-
-          <!-- Sound hole rosette decoration -->
           <circle cx="150" cy="492" r="48" fill="none" stroke="#c9a84c" stroke-width="4" stroke-opacity="0.15" stroke-dasharray="6 3"/>
 
-          <!-- ── Bridge ── -->
-          <path d="M 115,588 L 185,588 L 183,600 L 117,600 Z"
-            fill="#2a1405" stroke="#c9a84c" stroke-width="1.5"/>
-          <!-- Saddle -->
+          <!-- Bridge -->
+          <path d="M 115,588 L 185,588 L 183,600 L 117,600 Z" fill="#2a1405" stroke="#c9a84c" stroke-width="1.5"/>
           <rect x="118" y="585" width="64" height="5" rx="1.5" fill="#c9a84c" filter="url(#glow-gold)"/>
-          <!-- Bridge pins -->
           <circle cx="131" cy="596" r="2.5" fill="#c9a84c" fill-opacity="0.7"/>
           <circle cx="139" cy="596" r="2.5" fill="#c9a84c" fill-opacity="0.7"/>
           <circle cx="147" cy="596" r="2.5" fill="#c9a84c" fill-opacity="0.7"/>
@@ -270,27 +323,33 @@
           <!-- Tail endpin -->
           <circle cx="150" cy="652" r="4" fill="#c9a84c" fill-opacity="0.6"/>
 
-          <!-- ── Strings ── -->
-          <!-- String 1 — high E (thinnest) -->
-          <path class="guitar-string" id="str-1" d="M 130,93 Q 130,340 130,585"
-            stroke="#d8d8d8" stroke-width="0.8" fill="none" filter="url(#string-glow)"/>
-          <!-- String 2 — B -->
-          <path class="guitar-string" id="str-2" d="M 138,93 Q 138,340 138,585"
-            stroke="#cccccc" stroke-width="1.0" fill="none" filter="url(#string-glow)"/>
-          <!-- String 3 — G -->
-          <path class="guitar-string" id="str-3" d="M 146,93 Q 146,340 146,585"
-            stroke="#c0c0c0" stroke-width="1.2" fill="none" filter="url(#string-glow)"/>
-          <!-- String 4 — D -->
-          <path class="guitar-string" id="str-4" d="M 154,93 Q 154,340 154,585"
-            stroke="#b8b8b8" stroke-width="1.5" fill="none" filter="url(#string-glow)"/>
-          <!-- String 5 — A -->
-          <path class="guitar-string" id="str-5" d="M 162,93 Q 162,340 162,585"
-            stroke="#afafaf" stroke-width="1.8" fill="none" filter="url(#string-glow)"/>
-          <!-- String 6 — low E (thickest) -->
-          <path class="guitar-string" id="str-6" d="M 170,93 Q 170,340 170,585"
-            stroke="#a8a8a8" stroke-width="2.2" fill="none" filter="url(#string-glow)"/>
+          <!-- Strings (interactive — pluck via JS + Web Audio) -->
+          <!-- str-1 = high e (E4, 329.63 Hz) — thinnest, leftmost -->
+          <path class="guitar-string" id="str-1" data-string="0" data-freq="329.63"
+                d="M 130,93 Q 130,340 130,585"
+                stroke="#d8d8d8" stroke-width="0.8" fill="none" filter="url(#string-glow)"/>
+          <!-- str-2 = B (B3, 246.94 Hz) -->
+          <path class="guitar-string" id="str-2" data-string="1" data-freq="246.94"
+                d="M 138,93 Q 138,340 138,585"
+                stroke="#cccccc" stroke-width="1.0" fill="none" filter="url(#string-glow)"/>
+          <!-- str-3 = G (G3, 196.00 Hz) -->
+          <path class="guitar-string" id="str-3" data-string="2" data-freq="196.00"
+                d="M 146,93 Q 146,340 146,585"
+                stroke="#c0c0c0" stroke-width="1.2" fill="none" filter="url(#string-glow)"/>
+          <!-- str-4 = D (D3, 146.83 Hz) -->
+          <path class="guitar-string" id="str-4" data-string="3" data-freq="146.83"
+                d="M 154,93 Q 154,340 154,585"
+                stroke="#b8b8b8" stroke-width="1.5" fill="none" filter="url(#string-glow)"/>
+          <!-- str-5 = A (A2, 110.00 Hz) -->
+          <path class="guitar-string" id="str-5" data-string="4" data-freq="110.00"
+                d="M 162,93 Q 162,340 162,585"
+                stroke="#afafaf" stroke-width="1.8" fill="none" filter="url(#string-glow)"/>
+          <!-- str-6 = low E (E2, 82.41 Hz) — thickest, rightmost -->
+          <path class="guitar-string" id="str-6" data-string="5" data-freq="82.41"
+                d="M 170,93 Q 170,340 170,585"
+                stroke="#a8a8a8" stroke-width="2.2" fill="none" filter="url(#string-glow)"/>
 
-          <!-- ── Sound wave rings (animated via JS) ── -->
+          <!-- Sound wave rings (animated by JS after pluck) -->
           <g id="sound-waves">
             <circle class="sound-wave" cx="150" cy="492" r="48" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0"/>
             <circle class="sound-wave" cx="150" cy="492" r="48" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0"/>
@@ -300,7 +359,6 @@
       </div>
     </div>
 
-    <!-- Scroll indicator -->
     <div class="scroll-indicator" aria-hidden="true">
       <div class="scroll-line"></div>
       <span>Scroll</span>
@@ -317,59 +375,41 @@
       </div>
 
       <div class="about-layout">
-        <!-- Portrait -->
         <div class="about-portrait-wrap">
           <div class="about-portrait">
             <div class="portrait-inner">
-              <!-- Placeholder portrait with guitar-themed design -->
-              <svg class="portrait-graphic" viewBox="0 0 300 360" aria-label="Gary Coleman portrait placeholder">
-                <defs>
-                  <radialGradient id="portrait-bg" cx="50%" cy="40%" r="60%">
-                    <stop offset="0%" stop-color="#1a0d04"/>
-                    <stop offset="100%" stop-color="#080402"/>
-                  </radialGradient>
-                </defs>
-                <rect width="300" height="360" fill="url(#portrait-bg)"/>
-                <!-- Silhouette with guitar motif -->
-                <circle cx="150" cy="120" r="65" fill="#1e1008" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.4"/>
-                <circle cx="150" cy="120" r="55" fill="#1a0c06"/>
-                <!-- Face placeholder -->
-                <ellipse cx="150" cy="115" rx="38" ry="45" fill="#2a1505"/>
-                <!-- Shirt / body -->
-                <path d="M 80,320 Q 80,220 110,195 Q 130,185 150,182 Q 170,185 190,195 Q 220,220 220,320 Z" fill="#1a1a1a"/>
-                <!-- Guitar held -->
-                <rect x="195" y="200" width="18" height="100" rx="4" fill="#2a1405" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.5"/>
-                <ellipse cx="204" cy="310" rx="22" ry="30" fill="#1e0e04" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
-                <!-- Label -->
-                <text x="150" y="350" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#c9a84c" fill-opacity="0.5" letter-spacing="3">GARY COLEMAN</text>
-              </svg>
+              <img class="about-img"
+                   src="images/about.jpg"
+                   alt="Musician playing acoustic guitar in a studio setting"
+                   width="700"
+                   height="840"
+                   loading="lazy"
+                   decoding="async">
             </div>
             <div class="portrait-frame-corner tl" aria-hidden="true"></div>
             <div class="portrait-frame-corner tr" aria-hidden="true"></div>
             <div class="portrait-frame-corner bl" aria-hidden="true"></div>
             <div class="portrait-frame-corner br" aria-hidden="true"></div>
           </div>
-          <!-- Signature block -->
           <div class="about-credentials">
             <div class="credential-item">
-              <span class="cred-icon">♪</span>
+              <span class="cred-icon" aria-hidden="true">&#9834;</span>
               <span>Berklee College of Music Graduate</span>
             </div>
             <div class="credential-item">
-              <span class="cred-icon">♪</span>
+              <span class="cred-icon" aria-hidden="true">&#9834;</span>
               <span>Touring guitarist — 10+ years</span>
             </div>
             <div class="credential-item">
-              <span class="cred-icon">♪</span>
+              <span class="cred-icon" aria-hidden="true">&#9834;</span>
               <span>Certified Music Educator</span>
             </div>
           </div>
         </div>
 
-        <!-- Bio -->
         <div class="about-bio">
           <div class="bio-quote">
-            <span class="quote-mark">"</span>
+            <span class="quote-mark" aria-hidden="true">"</span>
             <p>The guitar is not just an instrument — it's a language. My goal is to help every student speak it fluently, authentically, and with their own voice.</p>
           </div>
           <div class="bio-body">
@@ -399,137 +439,171 @@
       </div>
     </div>
 
-    <!-- Decorative musical staff -->
     <div class="about-staff" aria-hidden="true">
       <div class="staff-bar"></div>
       <div class="staff-bar"></div>
       <div class="staff-bar"></div>
       <div class="staff-bar"></div>
       <div class="staff-bar"></div>
-      <span class="staff-note n1">♩</span>
-      <span class="staff-note n2">♪</span>
-      <span class="staff-note n3">♫</span>
-      <span class="staff-note n4">♬</span>
+      <span class="staff-note n1">&#9833;</span>
+      <span class="staff-note n2">&#9834;</span>
+      <span class="staff-note n3">&#9835;</span>
+      <span class="staff-note n4">&#9836;</span>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════ LESSONS ══ -->
-  <section id="lessons" class="reveal-section" aria-label="Lesson types">
+  <section id="lessons" class="reveal-section" aria-label="Lesson programs">
     <div class="section-container">
       <div class="section-header">
         <p class="section-eyebrow">What I Teach</p>
         <h2 class="section-title">Lesson Programs</h2>
         <div class="section-title-bar" aria-hidden="true"></div>
-        <p class="section-desc">Each program is tailored to your experience level, goals, and musical interests. All lessons are one-on-one and conducted either in-person or virtually.</p>
+        <p class="section-desc">Each program is tailored to your experience level, goals, and musical interests. All lessons are one-on-one, held in-person or virtually.</p>
       </div>
 
-      <div class="lessons-grid">
+      <div class="lessons-accordion">
 
-        <!-- Card 1 -->
-        <article class="lesson-card" tabindex="0" aria-label="Beginner Foundations lesson">
-          <div class="lesson-card-bg" aria-hidden="true"></div>
-          <div class="lesson-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40"><text y="30" font-size="28">🎸</text></svg>
+        <div class="la-item">
+          <button class="la-header" aria-expanded="true" aria-controls="la-0">
+            <span class="la-tag">Foundation</span>
+            <span class="la-title">Beginner Guitar</span>
+            <span class="la-indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="la-body" id="la-0">
+            <div class="la-body-inner">
+              <div class="la-content">
+                <p class="la-desc">Start your journey the right way. Learn proper technique, chord shapes, and basic music theory from day one — so you never develop bad habits that are difficult to unlearn.</p>
+                <a href="#contact" class="la-cta">Book this program <span aria-hidden="true">&#8594;</span></a>
+              </div>
+              <ul class="la-topics">
+                <li>Open chords &amp; strumming patterns</li>
+                <li>Reading tablature &amp; chord charts</li>
+                <li>Basic music theory fundamentals</li>
+              </ul>
+            </div>
           </div>
-          <div class="lesson-num" aria-hidden="true">01</div>
-          <h3 class="lesson-title">Beginner Foundations</h3>
-          <p class="lesson-desc">Start your journey the right way. Learn proper technique, chord shapes, and basic music theory from day one — so you never develop bad habits.</p>
-          <ul class="lesson-topics">
-            <li>Open chords &amp; strumming patterns</li>
-            <li>Reading tablature &amp; chord charts</li>
-            <li>Basic music theory fundamentals</li>
-          </ul>
-          <a href="#contact" class="lesson-link">Inquire <span aria-hidden="true">→</span></a>
-        </article>
+        </div>
 
-        <!-- Card 2 -->
-        <article class="lesson-card" tabindex="0" aria-label="Intermediate Development lesson">
-          <div class="lesson-card-bg" aria-hidden="true"></div>
-          <div class="lesson-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40"><text y="30" font-size="28">🎵</text></svg>
+        <div class="la-item">
+          <button class="la-header" aria-expanded="false" aria-controls="la-1">
+            <span class="la-tag">Progression</span>
+            <span class="la-title">Intermediate Development</span>
+            <span class="la-indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="la-body" id="la-1" style="height:0">
+            <div class="la-body-inner">
+              <div class="la-content">
+                <p class="la-desc">Break through plateaus. Expand your chord vocabulary, refine your picking technique, and start understanding song structure, arrangement, and improvisation basics.</p>
+                <a href="#contact" class="la-cta">Book this program <span aria-hidden="true">&#8594;</span></a>
+              </div>
+              <ul class="la-topics">
+                <li>Barre chords &amp; power chords</li>
+                <li>Pentatonic &amp; major scale shapes</li>
+                <li>Lead guitar fundamentals</li>
+              </ul>
+            </div>
           </div>
-          <div class="lesson-num" aria-hidden="true">02</div>
-          <h3 class="lesson-title">Intermediate Development</h3>
-          <p class="lesson-desc">Break through plateaus. Expand your chord vocabulary, refine your picking technique, and start understanding song structure and arrangement.</p>
-          <ul class="lesson-topics">
-            <li>Barre chords &amp; power chords</li>
-            <li>Pentatonic &amp; major scale shapes</li>
-            <li>Lead guitar fundamentals</li>
-          </ul>
-          <a href="#contact" class="lesson-link">Inquire <span aria-hidden="true">→</span></a>
-        </article>
+        </div>
 
-        <!-- Card 3 -->
-        <article class="lesson-card" tabindex="0" aria-label="Advanced Technique lesson">
-          <div class="lesson-card-bg" aria-hidden="true"></div>
-          <div class="lesson-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40"><text y="30" font-size="28">⚡</text></svg>
+        <div class="la-item">
+          <button class="la-header" aria-expanded="false" aria-controls="la-2">
+            <span class="la-tag">Mastery</span>
+            <span class="la-title">Advanced Technique</span>
+            <span class="la-indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="la-body" id="la-2" style="height:0">
+            <div class="la-body-inner">
+              <div class="la-content">
+                <p class="la-desc">For serious players ready to push limits. Deep dives into advanced soloing, sweep picking, tapping, hybrid picking, and genre-specific mastery across multiple styles.</p>
+                <a href="#contact" class="la-cta">Book this program <span aria-hidden="true">&#8594;</span></a>
+              </div>
+              <ul class="la-topics">
+                <li>Advanced soloing &amp; improvisation</li>
+                <li>Complex chord voicings &amp; inversions</li>
+                <li>Modal theory &amp; applications</li>
+              </ul>
+            </div>
           </div>
-          <div class="lesson-num" aria-hidden="true">03</div>
-          <h3 class="lesson-title">Advanced Technique</h3>
-          <p class="lesson-desc">For serious players. Deep dive into advanced concepts — sweep picking, tapping, hybrid picking, modal theory, and genre-specific mastery.</p>
-          <ul class="lesson-topics">
-            <li>Advanced soloing &amp; improvisation</li>
-            <li>Complex chord voicings &amp; inversions</li>
-            <li>Modal theory &amp; applications</li>
-          </ul>
-          <a href="#contact" class="lesson-link">Inquire <span aria-hidden="true">→</span></a>
-        </article>
+        </div>
 
-        <!-- Card 4 -->
-        <article class="lesson-card" tabindex="0" aria-label="Music Theory lesson">
-          <div class="lesson-card-bg" aria-hidden="true"></div>
-          <div class="lesson-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40"><text y="30" font-size="28">📖</text></svg>
+        <div class="la-item">
+          <button class="la-header" aria-expanded="false" aria-controls="la-3">
+            <span class="la-tag">Language</span>
+            <span class="la-title">Music Theory</span>
+            <span class="la-indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="la-body" id="la-3" style="height:0">
+            <div class="la-body-inner">
+              <div class="la-content">
+                <p class="la-desc">Understand the language behind the music. Theory lessons accelerate growth across all instruments and genres, unlocking your ability to learn faster and create more intentionally.</p>
+                <a href="#contact" class="la-cta">Book this program <span aria-hidden="true">&#8594;</span></a>
+              </div>
+              <ul class="la-topics">
+                <li>Scales, modes &amp; key signatures</li>
+                <li>Harmony, rhythm &amp; notation</li>
+                <li>Ear training &amp; transcription</li>
+              </ul>
+            </div>
           </div>
-          <div class="lesson-num" aria-hidden="true">04</div>
-          <h3 class="lesson-title">Music Theory</h3>
-          <p class="lesson-desc">Understand the language behind the music. Theory lessons accelerate growth across all instruments and genres, and unlock your creative potential.</p>
-          <ul class="lesson-topics">
-            <li>Scales, modes &amp; key signatures</li>
-            <li>Harmony, rhythm &amp; notation</li>
-            <li>Ear training &amp; transcription</li>
-          </ul>
-          <a href="#contact" class="lesson-link">Inquire <span aria-hidden="true">→</span></a>
-        </article>
+        </div>
 
-        <!-- Card 5 -->
-        <article class="lesson-card" tabindex="0" aria-label="Classical Guitar lesson">
-          <div class="lesson-card-bg" aria-hidden="true"></div>
-          <div class="lesson-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40"><text y="30" font-size="28">🎼</text></svg>
+        <div class="la-item">
+          <button class="la-header" aria-expanded="false" aria-controls="la-4">
+            <span class="la-tag">Tradition</span>
+            <span class="la-title">Classical Guitar</span>
+            <span class="la-indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="la-body" id="la-4" style="height:0">
+            <div class="la-body-inner">
+              <div class="la-content">
+                <p class="la-desc">Develop exquisite fingerstyle technique through the classical tradition. Study composers from Sor to Villa-Lobos while mastering posture, tone production, and expressive phrasing.</p>
+                <a href="#contact" class="la-cta">Book this program <span aria-hidden="true">&#8594;</span></a>
+              </div>
+              <ul class="la-topics">
+                <li>Classical posture &amp; right-hand technique</li>
+                <li>Sight-reading standard notation</li>
+                <li>Repertoire: Baroque to Modern</li>
+              </ul>
+            </div>
           </div>
-          <div class="lesson-num" aria-hidden="true">05</div>
-          <h3 class="lesson-title">Classical Guitar</h3>
-          <p class="lesson-desc">Develop exquisite fingerstyle technique through the classical tradition. Study composers from Sor to Villa-Lobos while mastering nail care, posture, and expression.</p>
-          <ul class="lesson-topics">
-            <li>Classical posture &amp; right-hand technique</li>
-            <li>Sight-reading standard notation</li>
-            <li>Repertoire: Baroque to Modern</li>
-          </ul>
-          <a href="#contact" class="lesson-link">Inquire <span aria-hidden="true">→</span></a>
-        </article>
+        </div>
 
-        <!-- Card 6 -->
-        <article class="lesson-card" tabindex="0" aria-label="Songwriting lesson">
-          <div class="lesson-card-bg" aria-hidden="true"></div>
-          <div class="lesson-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40"><text y="30" font-size="28">✍️</text></svg>
+        <div class="la-item">
+          <button class="la-header" aria-expanded="false" aria-controls="la-5">
+            <span class="la-tag">Expression</span>
+            <span class="la-title">Songwriting</span>
+            <span class="la-indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="la-body" id="la-5" style="height:0">
+            <div class="la-body-inner">
+              <div class="la-content">
+                <p class="la-desc">Turn ideas into complete songs. Learn to craft chord progressions, melodies, lyrics, and arrangements that connect with listeners and authentically reflect your artistic voice.</p>
+                <a href="#contact" class="la-cta">Book this program <span aria-hidden="true">&#8594;</span></a>
+              </div>
+              <ul class="la-topics">
+                <li>Chord progressions &amp; song structure</li>
+                <li>Melody writing &amp; lyric development</li>
+                <li>Recording basics &amp; demos</li>
+              </ul>
+            </div>
           </div>
-          <div class="lesson-num" aria-hidden="true">06</div>
-          <h3 class="lesson-title">Songwriting</h3>
-          <p class="lesson-desc">Turn ideas into complete songs. Learn to craft chord progressions, melodies, lyrics, and arrangements that connect with listeners and reflect your artistic voice.</p>
-          <ul class="lesson-topics">
-            <li>Chord progressions &amp; song structure</li>
-            <li>Melody writing &amp; lyric development</li>
-            <li>Recording basics &amp; demos</li>
-          </ul>
-          <a href="#contact" class="lesson-link">Inquire <span aria-hidden="true">→</span></a>
-        </article>
+        </div>
 
       </div>
 
-      <!-- Format note -->
       <div class="lessons-note">
         <p>All lessons are available in <strong>30, 45, or 60-minute</strong> sessions. In-person lessons are held in a fully equipped home studio. Virtual lessons via Zoom.</p>
       </div>
@@ -547,33 +621,26 @@
       </div>
 
       <div class="calendar-wrap">
-        <!-- Week navigation -->
         <div class="cal-nav" role="navigation" aria-label="Week navigation">
           <button class="cal-nav-btn" id="cal-prev" aria-label="Previous week">&#8592;</button>
           <h3 class="cal-week-label" id="cal-week-label">Loading...</h3>
           <button class="cal-nav-btn" id="cal-next" aria-label="Next week">&#8594;</button>
         </div>
 
-        <!-- Calendar legend -->
         <div class="cal-legend" aria-label="Calendar legend">
           <span class="legend-item"><span class="legend-dot available" aria-hidden="true"></span>Available</span>
           <span class="legend-item"><span class="legend-dot booked" aria-hidden="true"></span>Booked</span>
           <span class="legend-item"><span class="legend-dot unavailable" aria-hidden="true"></span>Unavailable</span>
         </div>
 
-        <!-- Calendar grid -->
-        <div class="calendar-grid" id="calendar-grid" role="grid" aria-label="Weekly schedule">
-          <!-- Rendered by JS -->
-        </div>
+        <div class="calendar-grid" id="calendar-grid" role="grid" aria-label="Weekly schedule"></div>
 
-        <!-- Booking note -->
         <div class="cal-booking-note">
-          <div class="cal-note-icon" aria-hidden="true">♪</div>
+          <div class="cal-note-icon" aria-hidden="true">&#9834;</div>
           <p>To reserve a time slot, use the <a href="#contact">contact form below</a>. Mention your preferred day and time and I'll confirm within 24 hours.</p>
         </div>
       </div>
 
-      <!-- Pricing -->
       <div class="pricing-wrap" aria-label="Lesson pricing">
         <h3 class="pricing-title">Lesson Rates</h3>
         <div class="pricing-grid">
@@ -591,7 +658,7 @@
           <div class="pricing-card">
             <span class="price-duration">Monthly Pack</span>
             <span class="price-amount">$290</span>
-            <span class="price-desc">4 × 60-min lessons (save $30)</span>
+            <span class="price-desc">4 &times; 60-min lessons (save $30)</span>
           </div>
         </div>
       </div>
@@ -608,7 +675,6 @@
       </div>
 
       <div class="contact-layout">
-        <!-- Left: Info -->
         <div class="contact-info">
           <div class="contact-tagline">
             <p>Ready to start your journey? Fill out the form and I'll be in touch within 24 hours to discuss your goals and schedule your first session.</p>
@@ -634,28 +700,28 @@
               </div>
               <div>
                 <span class="detail-label">Phone</span>
-                <a href="tel:+15555550123" class="detail-value">(555) 555-0123</a>
+                <a href="tel:+17132222999" class="detail-value">713-222-2999</a>
               </div>
             </div>
             <div class="contact-detail-item">
               <div class="contact-detail-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </div>
               <div>
                 <span class="detail-label">Location</span>
-                <span class="detail-value">In-Person &amp; Virtual</span>
+                <span class="detail-value">Houston, TX &mdash; In-Person &amp; Virtual</span>
               </div>
             </div>
           </div>
 
           <div class="contact-response-time">
-            <div class="response-icon" aria-hidden="true">⏱</div>
+            <div class="response-icon" aria-hidden="true">&#8987;</div>
             <p>Typical response time: <strong>under 24 hours</strong></p>
           </div>
 
-          <!-- Decorative waveform -->
           <div class="contact-waveform" aria-hidden="true" id="contact-waveform">
             <svg viewBox="0 0 300 60" preserveAspectRatio="none">
               <polyline id="waveform-line" points="" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-opacity="0.4"/>
@@ -663,10 +729,8 @@
           </div>
         </div>
 
-        <!-- Right: Form -->
         <div class="contact-form-wrap">
           <form class="contact-form" id="contact-form" novalidate aria-label="Lesson booking form">
-            <!-- Honeypot (anti-spam) -->
             <div class="form-honeypot" aria-hidden="true">
               <input type="text" name="website" tabindex="-1" autocomplete="off"/>
             </div>
@@ -687,14 +751,14 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="(555) 555-0000" autocomplete="tel"/>
+                <input type="tel" id="phone" name="phone" placeholder="(713) 555-0000" autocomplete="tel"/>
               </div>
               <div class="form-group">
                 <label for="lesson_type">Lesson Type <span class="required" aria-hidden="true">*</span></label>
                 <div class="form-select-wrap">
                   <select id="lesson_type" name="lesson_type" required>
                     <option value="" disabled selected>Select a program...</option>
-                    <option value="beginner">Beginner Foundations</option>
+                    <option value="beginner">Beginner Guitar</option>
                     <option value="intermediate">Intermediate Development</option>
                     <option value="advanced">Advanced Technique</option>
                     <option value="theory">Music Theory</option>
@@ -730,11 +794,11 @@
 
             <div class="form-group full-width">
               <label for="message">Message <span class="required" aria-hidden="true">*</span></label>
-              <textarea id="message" name="message" rows="5" placeholder="Tell me about your musical goals, current experience, and any questions you have..." required></textarea>
+              <textarea id="message" name="message" rows="5"
+                placeholder="Tell me about your musical goals, current experience, and any questions you have..." required></textarea>
               <span class="form-error" role="alert"></span>
             </div>
 
-            <!-- Form status -->
             <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
 
             <button type="submit" class="btn btn-primary btn-submit" id="submit-btn">
@@ -767,10 +831,10 @@
 
       <div class="footer-legal">
         <p>&copy; <span id="footer-year"></span> Gary Coleman Guitar. All rights reserved.</p>
+        <p class="footer-credit">Made by <a href="https://thedomaindesigners.com" target="_blank" rel="noopener noreferrer">The Domain Designers</a></p>
       </div>
     </div>
 
-    <!-- Bottom decorative staff -->
     <div class="footer-staff" aria-hidden="true">
       <div class="footer-staff-line"></div>
       <div class="footer-staff-line"></div>
