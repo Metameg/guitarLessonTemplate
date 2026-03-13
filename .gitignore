@@ -1,0 +1,6 @@
+# Environment / secrets
+.env
+
+# Composer
+vendor/
+composer.lock

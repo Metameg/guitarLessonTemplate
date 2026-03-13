@@ -1,0 +1,17 @@
+# Block direct browser access to sensitive files
+<FilesMatch "^(\.env|composer\.json|composer\.lock)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block direct access to slot state data (served via slot-states.php instead)
+<FilesMatch "slot-states\.json$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block access to vendor directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^vendor/ - [F,L]
+</IfModule>

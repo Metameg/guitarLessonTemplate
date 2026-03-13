@@ -555,6 +555,32 @@ const GuitarAudio = (() => {
   }
 })();
 
+/* ─────────────────────────────────── SLOT STATES ── */
+const SlotStates = (() => {
+  let data = {};
+
+  /** Return server-override for a slot, or null if none. */
+  function get(dayIdx, hour) {
+    return data[`${dayIdx}_${hour}`] ?? null;
+  }
+
+  /** Fetch php/slot-states.php and call onLoad() when done. */
+  async function load(onLoad) {
+    try {
+      const res = await fetch('php/slot-states.php', { cache: 'no-store' });
+      if (res.ok) {
+        const json = await res.json();
+        data = json && typeof json === 'object' ? json : {};
+        if (onLoad) onLoad();
+      }
+    } catch (_) {
+      // Network unavailable or PHP not running — silently use defaults
+    }
+  }
+
+  return { get, load };
+})();
+
 /* ───────────────────────────────────────────── CALENDAR ── */
 (function initCalendar() {
   const grid      = $('#calendar-grid');
@@ -621,7 +647,7 @@ const GuitarAudio = (() => {
       for (let d = 0; d < 6; d++) {
         const day = new Date(monday); day.setDate(monday.getDate() + d);
         const isPast = day < today || (day.getTime() === today.getTime() && h < nowH);
-        let status = (schedule[d]?.[h]) || 'unavailable';
+        let status = SlotStates.get(d, h) ?? schedule[d]?.[h] ?? 'unavailable';
         if (isPast) status = 'unavailable';
 
         const slot = document.createElement('div');
@@ -633,11 +659,16 @@ const GuitarAudio = (() => {
           slot.textContent = 'Open';
           slot.tabIndex = 0;
           const select = () => {
-            const tf = $('#preferred_time');
-            if (tf) {
-              tf.value = `${dayNames[d]} at ${fmtHour(h)}`;
-              tf.scrollIntoView({ behavior:'smooth', block:'center' });
-              tf.focus();
+            const val     = `${dayNames[d]} at ${fmtHour(h)}`;
+            const hidden  = $('#preferred_time');
+            const display = $('#time-picker-value');
+            const trigger = $('#time-picker-trigger');
+            const wrap    = $('#time-picker-wrap');
+            if (hidden)  hidden.value = val;
+            if (display) { display.textContent = val; display.classList.remove('placeholder'); }
+            if (wrap) {
+              wrap.scrollIntoView({ behavior:'smooth', block:'center' });
+              setTimeout(() => { if (trigger) trigger.focus(); }, 400);
             }
           };
           slot.addEventListener('click', select);
@@ -654,6 +685,7 @@ const GuitarAudio = (() => {
   prevBtn.addEventListener('click', () => { weekOffset--; render(); });
   nextBtn.addEventListener('click', () => { weekOffset++; render(); });
   render();
+  SlotStates.load(() => render());
 })();
 
 /* ─────────────────────────────────────── CONTACT FORM ── */
@@ -712,9 +744,8 @@ const GuitarAudio = (() => {
         setStatus('error-msg', (json.errors ?? [json.message]).filter(Boolean).join(', ') || 'Something went wrong.');
       }
     } catch (err) {
-      // If PHP is not available (static file preview), show a friendly note
-      setStatus('success', "Thank you! Your message has been received. (PHP mailer required for delivery.)");
-      form.reset();
+      setStatus('error-msg', 'Could not reach the server. Please check your connection and try again.');
+      console.error('Form submission error:', err);
     } finally {
       submitBtn.disabled = false;
       submitBtn.classList.remove('loading');
@@ -798,6 +829,134 @@ const GuitarAudio = (() => {
 (function initFooter() {
   const y = $('#footer-year');
   if (y) y.textContent = new Date().getFullYear();
+})();
+
+/* ─────────────────────────────── TIME PICKER WIDGET ── */
+(function initTimePicker() {
+  const wrap    = $('#time-picker-wrap');
+  if (!wrap) return;
+  const trigger = $('#time-picker-trigger');
+  const panel   = $('#time-picker-panel');
+  const valueEl = $('#time-picker-value');
+  const daysEl  = $('#tpk-days');
+  const slotsEl = $('#tpk-slots');
+  const hidden  = $('#preferred_time');
+
+  // Shared schedule (mirrors the display calendar)
+  const schedule = {
+    0: { 9:'booked',10:'available',11:'available',12:'unavailable',13:'unavailable',14:'booked',15:'available',16:'available',17:'available',18:'booked',19:'unavailable' },
+    1: { 9:'available',10:'available',11:'booked',12:'unavailable',13:'unavailable',14:'available',15:'booked',16:'available',17:'booked',18:'available',19:'available' },
+    2: { 9:'unavailable',10:'booked',11:'booked',12:'booked',13:'unavailable',14:'available',15:'available',16:'booked',17:'available',18:'available',19:'unavailable' },
+    3: { 9:'available',10:'booked',11:'available',12:'unavailable',13:'unavailable',14:'available',15:'available',16:'booked',17:'available',18:'booked',19:'available' },
+    4: { 9:'booked',10:'booked',11:'available',12:'unavailable',13:'unavailable',14:'booked',15:'available',16:'available',17:'booked',18:'available',19:'available' },
+    5: { 9:'available',10:'available',11:'booked',12:'available',13:'available',14:'booked',15:'available',16:'unavailable',17:'unavailable',18:'unavailable',19:'unavailable' }
+  };
+
+  const DAY_NAMES  = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const DAY_SHORT  = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+  const HOURS      = [9,10,11,12,13,14,15,16,17,18,19];
+  const fmtHour    = h => h === 12 ? '12 PM' : h < 12 ? `${h} AM` : `${h-12} PM`;
+
+  let selectedDay = null;
+  let isOpen = false;
+
+  function open() {
+    panel.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    isOpen = true;
+    if (selectedDay === null) selectDay(0);
+  }
+
+  function close() {
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    isOpen = false;
+  }
+
+  function selectDay(idx) {
+    selectedDay = idx;
+    $$('.tpk-day-btn', wrap).forEach((btn, i) => {
+      btn.classList.toggle('active', i === idx);
+      btn.setAttribute('aria-selected', String(i === idx));
+    });
+    renderSlots(idx);
+  }
+
+  function renderDays() {
+    daysEl.innerHTML = '';
+    DAY_SHORT.forEach((name, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tpk-day-btn';
+      btn.textContent = name;
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', 'false');
+      btn.setAttribute('aria-label', DAY_NAMES[i]);
+      btn.addEventListener('click', () => selectDay(i));
+      daysEl.appendChild(btn);
+    });
+  }
+
+  function renderSlots(dayIdx) {
+    slotsEl.innerHTML = '';
+    const daySchedule = schedule[dayIdx] || {};
+    let hasAny = false;
+
+    HOURS.forEach(h => {
+      const status = SlotStates.get(dayIdx, h) ?? daySchedule[h] ?? 'unavailable';
+      if (status === 'unavailable') return;
+      hasAny = true;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `tpk-slot ${status}`;
+      btn.setAttribute('aria-label', `${fmtHour(h)} — ${status}`);
+
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'tpk-slot-time';
+      timeSpan.textContent = fmtHour(h);
+      btn.appendChild(timeSpan);
+
+      if (status === 'booked') {
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'tpk-slot-label';
+        labelSpan.textContent = 'Booked';
+        btn.appendChild(labelSpan);
+        btn.disabled = true;
+      } else {
+        btn.addEventListener('click', () => {
+          const val = `${DAY_NAMES[dayIdx]} at ${fmtHour(h)}`;
+          valueEl.textContent = val;
+          valueEl.classList.remove('placeholder');
+          hidden.value = val;
+          close();
+          trigger.focus();
+        });
+      }
+      slotsEl.appendChild(btn);
+    });
+
+    if (!hasAny) {
+      const msg = document.createElement('p');
+      msg.className = 'tpk-no-slots';
+      msg.textContent = 'No available slots this day.';
+      slotsEl.appendChild(msg);
+    }
+  }
+
+  trigger.addEventListener('click', () => isOpen ? close() : open());
+
+  document.addEventListener('click', e => {
+    if (isOpen && !wrap.contains(e.target)) close();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && isOpen) { close(); trigger.focus(); }
+  });
+
+  renderDays();
+  // Load server overrides — re-render active day's slots if anything changed
+  SlotStates.load(() => { if (selectedDay !== null) renderSlots(selectedDay); });
 })();
 
 /* ─────────────────────────────────── SMOOTH SCROLL ── */
