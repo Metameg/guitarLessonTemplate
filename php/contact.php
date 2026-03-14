@@ -167,10 +167,6 @@ if ($slotKey !== null) {
     $tokenDecline = hash_hmac('sha256', "{$slotKey}:decline", SLOT_SECRET);
     $tokenCancel  = hash_hmac('sha256', "{$slotKey}:cancel",  SLOT_SECRET);
     $baseAction   = SITE_URL . '/php/slot-action.php';
-    // Raw URLs for plain-text email and visible fallback links
-    $rawAccept    = "{$baseAction}?slot={$slotKey}&action=accept&token={$tokenAccept}";
-    $rawDecline   = "{$baseAction}?slot={$slotKey}&action=decline&token={$tokenDecline}";
-    $rawCancel    = "{$baseAction}?slot={$slotKey}&action=cancel&token={$tokenCancel}";
     // HTML-encoded URLs for href attributes (&amp; required by HTML spec)
     $urlAccept    = "{$baseAction}?slot={$slotKey}&amp;action=accept&amp;token={$tokenAccept}";
     $urlDecline   = "{$baseAction}?slot={$slotKey}&amp;action=decline&amp;token={$tokenDecline}";
@@ -272,11 +268,7 @@ $adminHtml = <<<HTML
 </div></body></html>
 HTML;
 
-$slotPlainLinks = '';
-if ($slotKey !== null) {
-    $slotPlainLinks = "\n\n--- RESPOND TO INQUIRY ---\nAccept (mark Booked):\n{$rawAccept}\n\nDecline (reopen slot):\n{$rawDecline}\n\nDecline & Cancel (mark Unavailable):\n{$rawCancel}";
-}
-$adminPlain = "New lesson inquiry from {$name}\n\nName: {$name}\nEmail: {$email}\nPhone: {$phone}\nProgram: {$lessonLabel}\nExperience: {$experienceLabel}\nPreferred Time: {$preferredTime}\n\nMessage:\n{$message}{$slotPlainLinks}";
+$adminPlain = "New lesson inquiry from {$name}\n\nName: {$name}\nEmail: {$email}\nPhone: {$phone}\nProgram: {$lessonLabel}\nExperience: {$experienceLabel}\nPreferred Time: {$preferredTime}\n\nMessage:\n{$message}";
 
 // ── 2. User confirmation email ────────────────────────────────
 $userHtml = <<<HTML
