@@ -559,9 +559,12 @@ const GuitarAudio = (() => {
 const SlotStates = (() => {
   let data = {};
 
-  /** Return server-override for a slot, or null if none. */
-  function get(dayIdx, hour) {
-    return data[`${dayIdx}_${hour}`] ?? null;
+  /** Return server-override for a slot, or null if none.
+   * @param {string} dateStr  YYYY-MM-DD
+   * @param {number} hour     0–23
+   */
+  function get(dateStr, hour) {
+    return data[`${dateStr}_${hour}`] ?? null;
   }
 
   /** Fetch php/slot-states.php and call onLoad() when done. */
@@ -580,6 +583,20 @@ const SlotStates = (() => {
 
   return { get, load };
 })();
+
+/* ───────────────────────── WEEK / DATE HELPERS (shared) ── */
+/** Returns the Monday Date for week at given offset (0 = this week). */
+function getMonday(offset) {
+  const d   = new Date();
+  const day = d.getDay();
+  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day) + offset * 7);
+  d.setHours(0,0,0,0);
+  return d;
+}
+/** Returns YYYY-MM-DD string for use as slot key prefix. */
+function toDateStr(d) {
+  return d.toISOString().slice(0,10);
+}
 
 /* ───────────────────────────────────────────── CALENDAR ── */
 (function initCalendar() {
@@ -604,14 +621,6 @@ const SlotStates = (() => {
   let weekOffset = 0;
 
   const fmtHour = h => h === 12 ? '12 PM' : h < 12 ? `${h} AM` : `${h-12} PM`;
-
-  function getMonday(offset) {
-    const d   = new Date();
-    const day = d.getDay();
-    d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day) + offset * 7);
-    d.setHours(0,0,0,0);
-    return d;
-  }
 
   function render() {
     grid.innerHTML = '';
@@ -647,7 +656,7 @@ const SlotStates = (() => {
       for (let d = 0; d < 6; d++) {
         const day = new Date(monday); day.setDate(monday.getDate() + d);
         const isPast = day < today || (day.getTime() === today.getTime() && h < nowH);
-        let status = SlotStates.get(d, h) ?? schedule[d]?.[h] ?? 'unavailable';
+        let status = SlotStates.get(toDateStr(day), h) ?? schedule[d]?.[h] ?? 'unavailable';
         if (isPast) status = 'unavailable';
 
         const slot = document.createElement('div');
@@ -659,12 +668,15 @@ const SlotStates = (() => {
           slot.textContent = 'Open';
           slot.tabIndex = 0;
           const select = () => {
-            const val     = `${dayNames[d]} at ${fmtHour(h)}`;
-            const hidden  = $('#preferred_time');
-            const display = $('#time-picker-value');
-            const trigger = $('#time-picker-trigger');
-            const wrap    = $('#time-picker-wrap');
-            if (hidden)  hidden.value = val;
+            const dateLbl   = day.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+            const val       = `${dayNames[d]}, ${dateLbl} at ${fmtHour(h)}`;
+            const hidden    = $('#preferred_time');
+            const slotKeyEl = $('#slot_key');
+            const display   = $('#time-picker-value');
+            const trigger   = $('#time-picker-trigger');
+            const wrap      = $('#time-picker-wrap');
+            if (hidden)    hidden.value    = val;
+            if (slotKeyEl) slotKeyEl.value = `${toDateStr(day)}_${h}`;
             if (display) { display.textContent = val; display.classList.remove('placeholder'); }
             if (wrap) {
               wrap.scrollIntoView({ behavior:'smooth', block:'center' });
@@ -884,11 +896,13 @@ const SlotStates = (() => {
 
   function renderDays() {
     daysEl.innerHTML = '';
+    const monday = getMonday(0);
     DAY_SHORT.forEach((name, i) => {
+      const dayDate = new Date(monday); dayDate.setDate(monday.getDate() + i);
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'tpk-day-btn';
-      btn.textContent = name;
+      btn.innerHTML = `${name}<small style="display:block;font-size:10px;opacity:0.65;margin-top:1px;font-weight:400;">${dayDate.getDate()}</small>`;
       btn.setAttribute('role', 'tab');
       btn.setAttribute('aria-selected', 'false');
       btn.setAttribute('aria-label', DAY_NAMES[i]);
@@ -900,10 +914,13 @@ const SlotStates = (() => {
   function renderSlots(dayIdx) {
     slotsEl.innerHTML = '';
     const daySchedule = schedule[dayIdx] || {};
+    const monday  = getMonday(0);
+    const slotDay = new Date(monday); slotDay.setDate(monday.getDate() + dayIdx);
+    const dateStr = toDateStr(slotDay);
     let hasAny = false;
 
     HOURS.forEach(h => {
-      const status = SlotStates.get(dayIdx, h) ?? daySchedule[h] ?? 'unavailable';
+      const status = SlotStates.get(dateStr, h) ?? daySchedule[h] ?? 'unavailable';
       if (status === 'unavailable') return;
       hasAny = true;
 
@@ -925,10 +942,13 @@ const SlotStates = (() => {
         btn.disabled = true;
       } else {
         btn.addEventListener('click', () => {
-          const val = `${DAY_NAMES[dayIdx]} at ${fmtHour(h)}`;
+          const dateLbl   = slotDay.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+          const val       = `${DAY_NAMES[dayIdx]}, ${dateLbl} at ${fmtHour(h)}`;
           valueEl.textContent = val;
           valueEl.classList.remove('placeholder');
           hidden.value = val;
+          const slotKeyEl = $('#slot_key');
+          if (slotKeyEl) slotKeyEl.value = `${dateStr}_${h}`;
           close();
           trigger.focus();
         });

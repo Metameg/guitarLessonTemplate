@@ -17,9 +17,7 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/mailer-config.php';
 
-// ── Day/hour label helpers ────────────────────────────────────
-$dayNames = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
+// ── Hour label helper ─────────────────────────────────────────
 function fmtHour(int $h): string {
     if ($h === 12) return '12 PM';
     if ($h < 12)  return "{$h} AM";
@@ -33,14 +31,19 @@ $token  = $_GET['token']  ?? '';
 
 $validActions = ['accept', 'decline', 'cancel'];
 
-$inputOk = $slot !== '' && in_array($action, $validActions, true) && $token !== '';
+$inputOk  = $slot !== '' && in_array($action, $validActions, true) && $token !== '';
+$slotDate = null;
+$slotHour = -1;
 
 if ($inputOk) {
-    // Parse slot key
-    $parts = explode('_', $slot, 2);
-    $dayIdx = isset($parts[0]) ? (int)$parts[0] : -1;
-    $hour   = isset($parts[1]) ? (int)$parts[1] : -1;
-    $inputOk = isset($dayNames[$dayIdx]) && $hour >= 0 && $hour <= 23;
+    // Slot key format: "YYYY-MM-DD_H"  e.g. "2026-03-16_9"
+    if (preg_match('/^(\d{4}-\d{2}-\d{2})_(\d{1,2})$/', $slot, $m)) {
+        $slotDate = DateTimeImmutable::createFromFormat('Y-m-d', $m[1]);
+        $slotHour = (int)$m[2];
+        $inputOk  = $slotDate && $slotDate->format('Y-m-d') === $m[1] && $slotHour >= 0 && $slotHour <= 23;
+    } else {
+        $inputOk = false;
+    }
 }
 
 if (!$inputOk) {
@@ -96,9 +99,10 @@ if ($written === false) {
 }
 
 // ── Success page ──────────────────────────────────────────────
-$dayLabel  = $dayNames[$dayIdx];
-$timeLabel = fmtHour($hour);
-$slotLabel = "{$dayLabel} at {$timeLabel}";
+$dayLabel  = $slotDate->format('l');              // "Monday"
+$dateFmt   = $slotDate->format('M j, Y');         // "Mar 16, 2026"
+$timeLabel = fmtHour($slotHour);
+$slotLabel = "{$dayLabel}, {$dateFmt} at {$timeLabel}";
 
 renderPage('success', $actionLabel, "The <strong>{$slotLabel}</strong> slot has been updated to <strong>{$stateLabel}</strong>.<br>The booking calendar will reflect this change immediately.");
 exit;
