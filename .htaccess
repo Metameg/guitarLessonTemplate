@@ -11,7 +11,9 @@
 </FilesMatch>
 
 # Block access to vendor directory
+# Clean URL for slot manager (/manage → php/manage-slots.php)
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^vendor/ - [F,L]
+    RewriteRule ^manage/?$ php/manage-slots.php [L,QSA]
 </IfModule>
