@@ -78,6 +78,7 @@ $emailRaw      = trim($_POST['email']                  ?? '');
 $phone         = sanitizeText($_POST['phone']          ?? '');
 $lessonType    = sanitizeText($_POST['lesson_type']    ?? '');
 $preferredTime = sanitizeText($_POST['preferred_time'] ?? '');
+$rawSlotKey    = sanitizeText($_POST['slot_key']       ?? '');
 $experience    = sanitizeText($_POST['experience']     ?? '');
 $messageRaw    = trim($_POST['message']                ?? '');
 
@@ -137,29 +138,36 @@ require_once __DIR__ . '/mailer-config.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// ── Parse slot key from preferred_time ───────────────────────
-// preferredTime format: "Monday at 9 AM", "Friday at 2 PM", etc.
+// ── Resolve slot key ──────────────────────────────────────────
+// slot_key format: "YYYY-MM-DD_H"  e.g. "2026-03-16_9"
 $slotKey         = null;
 $slotActionBlock = '';
 
-if (!empty($preferredTime)) {
-    $dayIndexMap = [
-        'Monday'=>0,    'Mon'=>0,
-        'Tuesday'=>1,   'Tue'=>1,
-        'Wednesday'=>2, 'Wed'=>2,
-        'Thursday'=>3,  'Thu'=>3,
-        'Friday'=>4,    'Fri'=>4,
-        'Saturday'=>5,  'Sat'=>5,
-    ];
-    if (preg_match('/^(\w+) at (\d+) (AM|PM)$/', $preferredTime, $m)) {
-        $slotDayIdx = $dayIndexMap[$m[1]] ?? null;
-        $slotHour   = (int)$m[2];
-        if ($m[3] === 'PM' && $slotHour !== 12) $slotHour += 12;
-        if ($m[3] === 'AM' && $slotHour === 12) $slotHour  = 0;
-        if ($slotDayIdx !== null) {
-            $slotKey = "{$slotDayIdx}_{$slotHour}";
+if ($rawSlotKey !== '') {
+    if (preg_match('/^(\d{4}-\d{2}-\d{2})_(\d{1,2})$/', $rawSlotKey, $m)) {
+        $dt   = DateTimeImmutable::createFromFormat('Y-m-d', $m[1]);
+        $hour = (int)$m[2];
+        if ($dt && $dt->format('Y-m-d') === $m[1] && $hour >= 0 && $hour <= 23) {
+            $slotKey = $rawSlotKey;
         }
     }
+}
+
+// ── Persist pending booking so student can be notified later ─
+if ($slotKey !== null) {
+    $pbFile  = __DIR__ . '/pending-bookings.json';
+    $pb      = [];
+    if (file_exists($pbFile)) {
+        $pbRaw = file_get_contents($pbFile);
+        $pb    = ($pbRaw !== false && $pbRaw !== '') ? (json_decode($pbRaw, true) ?? []) : [];
+    }
+    $pb[$slotKey] = [
+        'name'           => $name,
+        'email'          => $email,
+        'preferred_time' => $preferredTime,
+        'submitted_at'   => date('Y-m-d H:i:s'),
+    ];
+    file_put_contents($pbFile, json_encode($pb, JSON_PRETTY_PRINT), LOCK_EX);
 }
 
 if ($slotKey !== null) {
