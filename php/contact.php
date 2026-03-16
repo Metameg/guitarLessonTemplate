@@ -153,6 +153,23 @@ if ($rawSlotKey !== '') {
     }
 }
 
+// ── Persist pending booking so student can be notified later ─
+if ($slotKey !== null) {
+    $pbFile  = __DIR__ . '/pending-bookings.json';
+    $pb      = [];
+    if (file_exists($pbFile)) {
+        $pbRaw = file_get_contents($pbFile);
+        $pb    = ($pbRaw !== false && $pbRaw !== '') ? (json_decode($pbRaw, true) ?? []) : [];
+    }
+    $pb[$slotKey] = [
+        'name'           => $name,
+        'email'          => $email,
+        'preferred_time' => $preferredTime,
+        'submitted_at'   => date('Y-m-d H:i:s'),
+    ];
+    file_put_contents($pbFile, json_encode($pb, JSON_PRETTY_PRINT), LOCK_EX);
+}
+
 if ($slotKey !== null) {
     $tokenAccept  = hash_hmac('sha256', "{$slotKey}:accept",  SLOT_SECRET);
     $tokenDecline = hash_hmac('sha256', "{$slotKey}:decline", SLOT_SECRET);

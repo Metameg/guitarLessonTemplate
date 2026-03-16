@@ -4,8 +4,8 @@
     Deny from all
 </FilesMatch>
 
-# Block direct access to slot state data (served via slot-states.php instead)
-<FilesMatch "slot-states\.json$">
+# Block direct access to slot data files
+<FilesMatch "(slot-states|pending-bookings)\.json$">
     Order allow,deny
     Deny from all
 </FilesMatch>

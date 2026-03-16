@@ -98,13 +98,22 @@ if ($written === false) {
     exit;
 }
 
+// ── Notify student and clear pending booking ──────────────────
+require_once __DIR__ . '/notify-student.php';
+$studentEmailed = notifyStudent($slot, $newState);
+clearPendingBooking($slot);
+
 // ── Success page ──────────────────────────────────────────────
 $dayLabel  = $slotDate->format('l');              // "Monday"
 $dateFmt   = $slotDate->format('M j, Y');         // "Mar 16, 2026"
 $timeLabel = fmtHour($slotHour);
 $slotLabel = "{$dayLabel}, {$dateFmt} at {$timeLabel}";
 
-renderPage('success', $actionLabel, "The <strong>{$slotLabel}</strong> slot has been updated to <strong>{$stateLabel}</strong>.<br>The booking calendar will reflect this change immediately.");
+$emailNote = $studentEmailed
+    ? '<br><span style="font-size:13px; opacity:0.8;">A confirmation email has been sent to the student.</span>'
+    : '';
+
+renderPage('success', $actionLabel, "The <strong>{$slotLabel}</strong> slot has been updated to <strong>{$stateLabel}</strong>.<br>The booking calendar will reflect this change immediately.{$emailNote}");
 exit;
 
 // ── HTML render helper ────────────────────────────────────────
