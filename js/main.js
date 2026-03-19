@@ -416,7 +416,7 @@ const GuitarAudio = (() => {
     return new Promise(r => setTimeout(r, 600));
   }
 
-  // ── Hero text typewriter ───────────────────────────────────
+  // ── (typewriter removed — subtitle is static HTML for FCP) ──
   function typewriter(el, text, speed = 42) {
     el.textContent = '';
     let i = 0;
@@ -457,16 +457,6 @@ const GuitarAudio = (() => {
     await new Promise(r => setTimeout(r, 350));
     await drawOutline();
     await revealDecorations();
-
-    // Reveal hero text
-    heroText.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    heroText.style.opacity    = '1';
-    heroText.style.transform  = 'translateY(0)';
-
-    const subtitle = $('#hero-subtitle');
-    if (subtitle) {
-      setTimeout(() => typewriter(subtitle, 'Elevating your playing — one lesson at a time.'), 300);
-    }
 
     setTimeout(() => animateCounters('.stat-number'), 500);
     // Silent visual strum on load (no audio — no user gesture yet)
@@ -632,8 +622,12 @@ function toDateStr(d) {
     weekLabel.textContent = `${monday.toLocaleDateString('en-US', opts)} – ${sat.toLocaleDateString('en-US', {...opts, year:'numeric'})}`;
 
     // Header row
+    const headerRow = document.createElement('div');
+    headerRow.setAttribute('role', 'row');
+    headerRow.className = 'cal-row';
     const timeHead = Object.assign(document.createElement('div'), { className:'cal-header-cell time-header' });
-    grid.appendChild(timeHead);
+    timeHead.setAttribute('role', 'columnheader');
+    headerRow.appendChild(timeHead);
 
     for (let d = 0; d < 6; d++) {
       const day = new Date(monday); day.setDate(monday.getDate() + d);
@@ -642,16 +636,22 @@ function toDateStr(d) {
       cell.className = 'cal-header-cell' + (isToday ? ' today' : '');
       cell.setAttribute('role', 'columnheader');
       cell.innerHTML = `<div class="cal-day-name">${dayNames[d]}</div><div class="cal-day-date">${day.getDate()}</div>`;
-      grid.appendChild(cell);
+      headerRow.appendChild(cell);
     }
+    grid.appendChild(headerRow);
 
     // Time slot rows
     const nowH = new Date().getHours();
     hours.forEach(h => {
+      const row = document.createElement('div');
+      row.setAttribute('role', 'row');
+      row.className = 'cal-row';
+
       const timeCell = document.createElement('div');
       timeCell.className = 'cal-time-label cal-time-col';
+      timeCell.setAttribute('role', 'rowheader');
       timeCell.textContent = fmtHour(h);
-      grid.appendChild(timeCell);
+      row.appendChild(timeCell);
 
       for (let d = 0; d < 6; d++) {
         const day = new Date(monday); day.setDate(monday.getDate() + d);
@@ -689,8 +689,9 @@ function toDateStr(d) {
           slot.textContent = 'Booked';
         }
 
-        grid.appendChild(slot);
+        row.appendChild(slot);
       }
+      grid.appendChild(row);
     });
   }
 
@@ -986,3 +987,22 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior:'smooth', block:'start' }); }
   });
 });
+
+
+/* ─────────────────────────────────── YOUTUBE FACADE ── */
+(function () {
+  document.querySelectorAll('.yt-facade').forEach(el => {
+    function activate() {
+      const vid = el.dataset.vid;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?autoplay=1&rel=0`;
+      iframe.title = el.querySelector('img')?.alt || 'YouTube video player';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      el.parentNode.replaceChild(iframe, el);
+    }
+    el.addEventListener('click', activate);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+  });
+})();

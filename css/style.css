@@ -3,6 +3,71 @@
    Design: Dark, clean, modern. Cool blue accents.
    ═══════════════════════════════════════════════════════════════ */
 
+/* ══════════════════════════════════════════════ FONTS ══ */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../fonts/inter-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/inter-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/inter-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/inter-600.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/inter-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/playfair-display-400i.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/playfair-display-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/playfair-display-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../fonts/playfair-display-900.woff2') format('woff2');
+}
+
 /* ── Custom Properties ─────────────────────────────────────── */
 :root {
   --bg-primary:      #06091a;
@@ -19,7 +84,7 @@
 
   --text-primary:    #eef2ff;
   --text-secondary:  #8ba3c7;
-  --text-muted:      #3d5478;
+  --text-muted:      #7494b8;
   --text-accent:     #60a5fa;
 
   --border:          rgba(255, 255, 255, 0.06);
@@ -304,10 +369,7 @@ h1, h2, h3, h4 {
 }
 
 /* Hero text */
-.hero-text {
-  opacity: 0;
-  transform: translateY(30px);
-}
+.hero-text {}
 
 .hero-eyebrow {
   font-size: 12px;
@@ -563,7 +625,7 @@ h1, h2, h3, h4 {
 
 .about-layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 420px 1fr;
   gap: clamp(40px, 6vw, 80px);
   align-items: start;
 }
@@ -962,6 +1024,8 @@ h1, h2, h3, h4 {
 .legend-dot.unavailable { background: #1a1a1a; border: 1px solid #222; }
 
 /* Calendar grid */
+.cal-row { display: contents; }
+
 .calendar-grid {
   display: grid;
   grid-template-columns: 72px repeat(6, 1fr);
@@ -1043,7 +1107,7 @@ h1, h2, h3, h4 {
 }
 .cal-slot.booked {
   background: #0e1830;
-  color: #3a3a3a;
+  color: #7a92a8;
   font-size: 10px;
 }
 .cal-slot.unavailable {
@@ -1486,8 +1550,87 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
   display: block;
+}
+
+/* ════════════════════════════════════ PORTRAIT GLOW ══ */
+.about-portrait::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.18) 0%, transparent 70%);
+  border-radius: var(--radius-md);
+  z-index: 0;
+  pointer-events: none;
+}
+.portrait-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════ VIDEOS ══ */
+#videos {
+  position: relative;
+}
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .videos-grid { grid-template-columns: 1fr; max-width: 560px; margin-inline: auto; }
+}
+.yt-facade {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  background: #000;
+  border: 1px solid var(--border-blue);
+  display: block;
+}
+.yt-facade img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
+  filter: brightness(0.85);
+}
+.yt-facade:hover img,
+.yt-facade:focus-visible img {
+  transform: scale(1.04);
+  filter: brightness(0.7);
+}
+.yt-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.yt-play-btn {
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.yt-facade:hover .yt-play-btn,
+.yt-facade:focus-visible .yt-play-btn {
+  transform: scale(1.12);
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,0.8));
+}
+.yt-facade:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+/* iframe replaces facade after click */
+#videos .videos-grid iframe {
+  aspect-ratio: 16/9;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-blue);
 }
 
 /* ══════════════════════════════════════ GUITAR HINT ══ */
